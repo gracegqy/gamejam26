@@ -1,0 +1,15 @@
+Main Character
+Controlled by Player
+
+Val
+v_fav_book: 
+v_fav_place: 
+
+
+Melanie
+m_fav_book: 
+m_fav_place: 
+
+Lina
+l_fav_book: ()
+l_fav_place: cafe

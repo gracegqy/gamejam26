@@ -17,20 +17,84 @@ define config.history_current_dialogue = True
 define config.history_length = 200
 
 
+# Bond Value
+default bond_value = 0
+screen bond_display():
+    frame:
+        align(1.0, 0.0)
+        padding(10, 10)
+        text "Bond with Player: [bond_value]"
+
+
+# Meta File Interaction
+init python:
+    import os
+    import sys
+    import subprocess
+
+    def open_game_folder():
+        try:
+            path = renpy.config.gamedir
+
+            if sys.platform == "darwin":    #Mac OS
+                subprocess.call(["open", path])
+            elif sys.platform.startswith("win"):    #Windows
+                os.startfile(path)
+            else:
+                subprocess.call(["xdg-open", path]) #Linux
+        
+        except Exception:
+            renpy.log("Failed to open game folder.")
+
+    def profile_detection():
+        try:
+            path = os.path.join(renpy.config.gamedir, "dating_profiles.txt")
+
+            with open(path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip().lower()
+
+                    # TODO: Fill in profile content
+                    if line.startswith("l_fav_book"):
+                        return line.split(": ", 1)[1].strip()
+        
+        except Exception:
+            renpy.log("Failed to get favorite book")
+            return None
+    
+    def place_detection():
+        try:
+            path = os.path.join(renpy.config.gamedir, "dating_profiles.txt")
+
+            with open(path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip().lower()
+
+                    # TODO: Fill in profile content
+                    if line.startswith("l_fav_place"):
+                        return line.split(": ", 1)[1].strip()
+        
+        except Exception:
+            renpy.log("Failed to get favorite place")
+            return None
+
+
 # Game Body
 # Start
 label start:
 
     # Scene 1
 
-    # play music <[happy]>
+    # TODO: play music <[happy]>
 
     l "{i}The dating sim life is pretty simple.{/i}"
     l "{i}All you have to do is get to know people.{/i}"
     l "{i}Who knows, maybe you’ll be lucky enough for them to pick you!{/i}"
     l "{i}And if not, there’s plenty more fish in the sea.{/i}"
 
-    # stop music
+    show screen bond_display
+
+    stop music
 
     l "{i}At least, that’s how it used to be.{/i}"
     l "{i}Now, every play session is a death match to win the player’s appreciation.{/i}"
@@ -88,7 +152,7 @@ label start:
             "Pretty confident!":
                 jump ysb
             "Nervous.":
-                jump nnb
+                jump nntb
 
     label ysb:
         v "You should be!"
@@ -107,14 +171,14 @@ label start:
     hide v
     hide l
 
-    #call screen 
+    # TODO: What's this? "call screen"
 
-    #play music [happy]
+    # TODO: play music [happy]
 
-    #[start button animation]
+    # TODO: [start button animation]
 
     stop music
-    #play music [coffee shop]
+    # TODO: play music [coffee shop]
 
     "Teacher" "Alright class, it’s time to start our group project. Please make groups of four."
 
@@ -180,27 +244,28 @@ label start:
     # Scene 6
 
     stop music
-    #play music [mysterious]
+    # TODO: play music [mysterious]
 
-    #[game breaking animation]
-    # play sound [glitchy sounds]
+    # TODO: [game breaking animation]
+    # TODO: play sound [glitchy sounds]
 
     l "{i} What the…? {/i}"
     l "{i} What’s going on? {/i}"
     l "{i} Something’s wrong… I think it might be the game’s code! {/i}"
 
-    #[folder icon lights up]
-
     l "{i} Huh, my folder is lighting up. {/i}"
+    $ import subprocess
+    $ import sys
+    $ import os
+    $ open_game_folder()  # Folder pops up
+
     l "{i} Usually that’s where I keep stuff I collect as the game goes on, but maybe something’s up with it. {/i}"
 
-    #[wait for players to click on the folder] (graceguqianying@uchicago.edu, I think we would need #to set up a screen with hotspots for this to work)
-
-    l "{i} Wait, what? Why is my dating profile in my folder? {/i}"
+    l "{i} Wait, what? Why is my {b}dating profile{/b} in my folder? {/i}"
     l "{i} That has all the information about me so the player can decide if they like me… {/i}"
     l "{i} …but usually I’m not able to access it. {/i}"
 
-    #scene [profile]
+    # Profile Interaction
 
     l "{i} Wait, I can change stuff? I’ve never been able to do that before!{/}"
     l "{i} This must be because of one of those glitches {/i}"
@@ -208,23 +273,34 @@ label start:
     l "{i} If I can my profile align with [redshark123]’s, maybe I can make him want to pick me {/i}"
     l "{i} Now, what do I know about him? What can I change? {/i}"
 
+    label change_profile:
+        $ current_book = profile_detection()
+
+        if current_book == "foundation" or current_book == "Foundation":
+            jump next
+        
+        else:
+            jump rethink
+    
+    label rethink:
+        l "{i}Hmm... If I align my profile with [redshark123]’s, maybe I can make him want to pick me.{/i}"
+        l "{i}Now, what do I know about him? What can I change?{/i}"
+        jump change_profile
+
     # Scene 7
 
-    #First puzzle: For this first puzzle to work, it needs a couple of things graceguqianying@uchicago.edu: 
-    #A poster in the classroom that can be added to the folder and viewed when clicked (I can design it)
-    #The ability to add to the list of favorite books on the player profile, with the story only continuing after the player adds “Foundation”.
+    # TODO: A poster in the classroom that can be added to the folder and viewed when clicked (I can design it)
 
-    #This happens after the player updates their list of favorite books
+    # TODO: scene [classroom]
+    # TODO: music [coffee shop]
 
-    #scene [classroom]
-    #music [coffee shop]
+    label next:
+        show l at center
 
-    show l at center
+        l "{i} There, that should do it. {/i}"
+        l "{i} Now he should think that I like the Foundation series. {/i}"
 
-    l "{i} There, that should do it. {/i}"
-    l "{i} Now he should think that I like the Foundation series. {/i}"
-
-    show m at right
+        show m at right
 
     m "You’re so screwed."
     m "This guy’s nothing like you at all!"
@@ -250,15 +326,15 @@ label start:
 
     # Scene 8
 
-    #glitches appear (graceguqianying@uchicago.edu This could be an animation)
+    # TODO: glitches appear (graceguqianying@uchicago.edu This could be an animation)
     stop music
-    #play sound [glitch]
-    #A single glitch remains onscreen (show glitch)
+    # TODO: play sound [glitch]
+    # TODO: A single glitch remains onscreen (show glitch)
 
     m "What…?"
     m "What’s happening?!?"
 
-    #glitches stop
+    # TODO: glitches stop
     show v at left
 
     v "Did you see that too?"
@@ -318,10 +394,10 @@ label start:
 
     # Scene 9
 
-    #This is a puzzle that involves sliding blocks of different lengths either left/right or up/down to create a free path to remove a smaller block, kind of like this: Rush Hour. If this is too hard to code, the puzzle can be changed.
+    # TODO: This is a puzzle that involves sliding blocks of different lengths either left/right or up/down to create a free path to remove a smaller block, kind of like this: Rush Hour. If this is too hard to code, the puzzle can be changed.
 
-    #scene [classroom]
-    #play music [coffee shop]
+    # TODO: scene [classroom]
+    # TODO: play music [coffee shop]
 
 
     show l at center
@@ -381,19 +457,31 @@ label start:
 
     # Scene 10
 
-    # This is another puzzle where you have to change part of your profile. This time, graceguqianying@uchicago.edu I need:
-    # A map that can be added to the folder and viewed in on when you click it (I think I can design the map, but I might need your help with the art grrosen@uchicago.edu)
+    # TODO: A map that can be added to the folder and viewed in on when you click it (I think I can design the map, but I might need your help with the art
     # The ability to change the “favorite place” via dropdown or text entry
     # The game to continue when the favorite place spot is changed to mini golf
 
-    #This happens after the player updates their favorite place
+    label change_place:
+        $ current_place = place_detection()
 
-    #scene [classroom]
-    show l at left
+        if current_place == "mini golf" or current_place == "Mini Golf" or current_place == "Mini golf":
+            jump next_2
+        
+        else:
+            jump rethink_2
+    
+    label rethink_2:
+        l "{i}So, I can mess with my profile a little again.{/i}"
+        l "{i}Where would [redshark123] want to go out?{/i}"
+        jump change_place
 
-    l "{i} That seems right, at least from what I know about him. {/i}"
+    # TODO: scene [classroom]
+    
+    label next_2:
+        show l at left
+        l "{i} That seems right, at least from what I know about him. {/i}"
 
-    #play music [tension]
+    # TODO: play music [tension]
     show r at right
 
     m "So, you like Foundation now?"
@@ -429,7 +517,7 @@ label start:
     hide m
     hide l
     show l at truecenter
-    #play music [romantic]
+    # TODO: play music [romantic]
 
     r "[Lina], I just found out that you like mini golfing. I’m a fan too."
     r "First the books, and now this…"
@@ -448,9 +536,9 @@ label start:
 
     # Scene 12
 
-    # For the second glitch puzzle, I was thinking of something different than rush hour. Another puzzle that I think could work well in ren.py is a nonogram, in which you have a 10x10 grid with numbers next to each row and column. The numbers tell you how many squares should be filled in their respective row/column, and you must fill them accordingly. Here’s an example: Do you think you can code this, graceguqianying@uchicago.edu? Again, if not, we can always change the puzzle.
+    # TODO: For the second glitch puzzle, I was thinking of something different than rush hour. Another puzzle that I think could work well in ren.py is a nonogram, in which you have a 10x10 grid with numbers next to each row and column. The numbers tell you how many squares should be filled in their respective row/column, and you must fill them accordingly. Here’s an example: Do you think you can code this, graceguqianying@uchicago.edu? Again, if not, we can always change the puzzle.
 
-    #scene [classroom]
+    # TODO: scene [classroom]
     stop music
     show l at center
     show r at truecenter
@@ -460,7 +548,7 @@ label start:
 
     r "Okay, [Lina], I get it."
 
-    #music [tension]
+    # TODO: play music [tension]
 
     r "You could have just said that you’re not interested."
     r "There’s no need for the silent treatment."
@@ -486,15 +574,18 @@ label start:
     l "{i}I think… I think this is it.{/i}"
 
     # Scene 13
+    # TODO: play music [mysterious]
 
-    #The folder lights up like last before (just the same animation, graceguqianying@uchicago.edu)
-    #play music [mysterious]
+    $ import subprocess
+    $ import sys
+    $ import os
+    $ open_game_folder()  # Folder pops up again
 
     l "{i}Again with the folder?{/i}"
 
-    #When players click on the folder, they’ll find a new file, Melanie’s profile (I’ll design it)
+    # TODO: When players click on the folder, they’ll find a new file, Melanie’s profile (I’ll design it)
 
-    l "{i}{color=#9a2151ff}MELANIE’S{/color} profile?!?{/i}"
+    l "{i}{color=#9a2151ff}MELANIE{/color}’s profile?!?{/i}"
     l "{i}What’s that doing in my folder?{/i}"
     l "{i}This is so weird. Why is this all happening to me?{/i}"
     l "{i}Wait…{/i}"
@@ -502,7 +593,7 @@ label start:
     l "{i}I can’t make [redshark123] like me more by changing my own profile…{/i}"
     l "{i}But what if I sabotage [Melanie]’s? Maybe I can edit hers the same way I can with mine!{/i}"
 
-    #When players click on Melanie’s profile, they’ll be taken to a screen that says it’s locked with a pin code. #There’s a hint that says MM/DD.
+    # TODO: When players click on Melanie’s profile, they’ll be taken to a screen that says it’s locked with a pin code. #There’s a hint that says MM/DD.
 
     l "{i}It’s locked? Dang it.{/i}"
     l "{i}Maybe I can figure out the password somehow.{/i}"
@@ -512,13 +603,13 @@ label start:
 
     # Scene 14
 
-    # graceguqianying@uchicago.edu This is the last puzzle. The interactive features needed are:
+    # TODO: This is the last puzzle. The interactive features needed are:
     # A note sheet that can be added to the folder and viewed when clicked (I’ll design it)
     # An input asking for four numbers when Melanie’s profile is clicked
     # Melanie’s profile shows up after the code 1018 is entered
     # At least one interactive aspect of Melanie’s profile that can be changed to something less desirable (like changing her traits to something redshark123 doesn’t like)
 
-    #This happens after Melanie’s profile is changed
+    # This happens after Melanie’s profile is changed
 
     #scene [classroom]
     show l at center
@@ -580,5 +671,6 @@ label start:
 
     v "You’ve got this."
 
+    # TODO: Ending
 
     return
