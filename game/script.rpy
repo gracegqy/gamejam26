@@ -14,7 +14,6 @@ default Melanie = "{color=#9a2151ff}Melanie{/color}"
 
 # Dialogue History
 define config.history_current_dialogue = True
-define config.history_length = 200
 
 
 # # Bond Value - Discarded
@@ -27,6 +26,18 @@ define config.history_length = 200
 
 
 # Assets
+# Characters
+image l = "images/characters/lina.png"
+image v = "images/characters/val.png"
+image m = "images/characters/melanie.png"
+image r = "images/characters/redshark123.png"
+
+# Backgrounds
+image classroom = "images/backgrounds/classroom.png"
+
+# Sounds
+
+# Animation
 image game_start:   #animation
     "images/animations/game_start/frame1.png"
     0.2
@@ -37,6 +48,7 @@ image game_start:   #animation
     "images/animations/game_start/frame4.png"
     0.4
 
+# Effects
 transform screen_shake:
     xoffset 0 yoffset 0
     linear 0.04 xoffset -15 yoffset 10
@@ -76,11 +88,29 @@ screen glitch_overlay():
 screen single_glitch():
     add "images/glitch/frame2.png" at glitch, pos_2
 
+screen display_obj():
+    zorder -10 # Behind other elements
+    add obj_image:
+        zoom 0.33
+        xalign 0.5
+        yalign 0.1
+
+# Calling in game
+# $ obj_image = "images/clues/book_poster.png"
+# $ obj_image = "images/clues/note.png"
+# show screen display_obj
+# with dissolve
+
+# hide screen display_obj
+# with dissolve
+
+
 # Meta File Interaction
 init python:
     import os
     import sys
     import subprocess
+    import time
 
     def open_game_folder():
         try:
@@ -116,6 +146,24 @@ init python:
     
     def place_detection():
         return meta_detection("dating_profiles.txt", "l_fav_hangout_spot", ": ")
+
+    def glitch_detection_1():
+        return meta_detection("assets.txxt", "<text>", ": ")
+
+    def glitch_detection_2():
+        return meta_detection("assets.txxt", "<text>", ": ")
+
+    def glitch_detection_3():
+        return meta_detection("assets.txxt", "<text>", ": ")
+
+    def change_timestamp(path):
+        try:
+            now = time.time()
+            os.utime(path, (now, now))
+            return True
+        except Exception:
+            renpy.log("Touch file failed")
+            return False
 
 
 # Game Body
@@ -326,9 +374,9 @@ label start:
 
     # Profile Interaction
 
-    l "{i} Wait, I can change stuff? I’ve never been able to do that before!{/}"
+    l "{i} Wait, I can change stuff? I’ve never been able to do that before!{/i}"
     l "{i} This must be because of one of those glitches {/i}"
-    l "{i} Maybe… could I use this to my advantage {/I}"
+    l "{i} Maybe… could I use this to my advantage {/i}"
     l "{i} If I can my profile align with [redshark123]’s, maybe I can make him want to pick me {/i}"
     l "{i} Now, what do I know about him? What can I change? {/i}"
 
@@ -399,7 +447,6 @@ label start:
     m "What…?"
     m "What’s happening?!?"
 
-    hide screen single_glitch
     show v at left
 
     v "Did you see that too?"
@@ -460,10 +507,37 @@ label start:
     hide m
 
     l "{i}Alright, I’ll fix the glitch. How hard can that be?{/i}"
+    l "{i}Let me see if there's an anomolous file I can fix...{/i}"
+    l "{i}Maybe if I remove all the words from there that don't look right, the glitches will be gone!{/i}"
+    
+    $ import subprocess
+    $ import sys
+    $ import os
+    $ open_game_folder()  # Folder pops up
 
     # Scene 9
 
-    # TODO: This is a puzzle that involves sliding blocks of different lengths either left/right or up/down to create a free path to remove a smaller block, kind of like this: Rush Hour. If this is too hard to code, the puzzle can be changed.
+    # TODO: To remove the glitch, you need to delete all of the text in a folder that’s “out of place”. The out of place folder here is called assets.txxt (there’s an extra x, and more tech-savvy players would know that you wouldn’t use a .txt folder for assets.)
+
+    label fix_glitch:
+        $ glitch_1 = glitch_detection_1()
+        $ glitch_2 = glitch_detection_2()
+        $ glitch_3 = glitch_detection_3()
+
+        if glitch_1 == "<smth>" and glitch_2 == "<smth>" and glitch_3 == "<smth>":
+            jump next_12
+        
+        else:
+            jump rethink_3
+    
+    label rethink_3:
+        $ renpy.choice_for_skipping()
+        l "{i}Let me check again if there's an anomolous file I can fix...{/i}"
+        l "{i}Maybe if I remove all the words from there that don't look right, the glitches will be gone!{/i}"
+        jump fix_glitch
+
+    label next_12:
+        hide screen single_glitch
 
     # TODO: scene [classroom]
     # TODO: play music [coffee shop]
@@ -523,6 +597,12 @@ label start:
     l "{i} This guy is impossible! {/i}"
     l "{i} My profile says my favorite place to spend time is a cafe, but I guess this guy really hates those. {/i}"
     l "{i} Maybe… maybe I can mess with my profile a little again. {/i}"
+
+    $ import subprocess
+    $ import sys
+    $ import os
+    $ open_game_folder()  # Folder pops up
+
     l "{i} Where would [redshark123] want to go out? {/i}"
 
     # Scene 10
@@ -604,15 +684,31 @@ label start:
     stop music
     # TODO: Menu options that say “Yes” and “No” show up, but before the player can click either of them, #another glitch animation plays and glitch sprites block the options. While this is going on, redshark123 #asks the player why they’re not responding, but they’re powerless about it (how much of this is doable    #graceguqianying@uchicago.edu? I thought this would be cool, but we definitely don’t need all of it.
 
+    # Glitch effect again
+    camera at screen_shake
+    show screen glitch_overlay
+
     l "{i} Oh no, another glitch! Could the timing be any worse? {/i}"
     l "{i} I need to get rid of this so [redshark123] can pick me! {/i}"
+
+    $ import subprocess
+    $ import sys
+    $ import os
+
+    $ profile = os.path.join(renpy.config.gamedir, "<file_name>")
+    $ success = change_timestamp(profile)
+
+    $ open_game_folder()  # Folder pops up
 
     # Scene 12
 
     # TODO: For the second glitch puzzle, I was thinking of something different than rush hour. Another puzzle that I think could work well in ren.py is a nonogram, in which you have a 10x10 grid with numbers next to each row and column. The numbers tell you how many squares should be filled in their respective row/column, and you must fill them accordingly. Here’s an example: Do you think you can code this, graceguqianying@uchicago.edu? Again, if not, we can always change the puzzle.
 
     # TODO: scene [classroom]
+    camera at default
+    hide screen glitch_overlay
     stop music
+
     show l at center
     show r at truecenter
 
@@ -652,7 +748,7 @@ label start:
     $ import subprocess
     $ import sys
     $ import os
-    $ open_game_folder()  # Folder pops up again
+    $ open_game_folder()  # Folder pops up
 
     l "{i}Again with the folder?{/i}"
 
@@ -670,8 +766,8 @@ label start:
 
     l "{i}It’s locked? Dang it.{/i}"
     l "{i}Maybe I can figure out the password somehow.{/i}"
-    l "{/i}...I shouldn’t be doing this. It’s not right.{/i}"
-    l "{/i}But it’s me or her. I’m not hurting [Melanie], I’m just using all the tools at my disposal.{/i}"
+    l "{i}...I shouldn’t be doing this. It’s not right.{/i}"
+    l "{i}But it’s me or her. I’m not hurting [Melanie], I’m just using all the tools at my disposal.{/i}"
     l "{i}Right?{/i}"
 
     # Scene 14
