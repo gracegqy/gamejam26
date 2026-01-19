@@ -176,7 +176,7 @@ label start:
     hide v
     hide l
 
-    # TODO: What's this? "call screen"
+    # call screen
 
     # TODO: play music [happy]
 
@@ -270,7 +270,6 @@ label start:
     $ open_game_folder()  # Folder pops up
 
     l "{i} Usually that’s where I keep stuff I collect as the game goes on, but maybe something’s up with it. {/i}"
-
     l "{i} Wait, what? Why is my {b}dating profile{/b} in my folder? {/i}"
     l "{i} That has all the information about me so the player can decide if they like me… {/i}"
     l "{i} …but usually I’m not able to access it. {/i}"
@@ -293,6 +292,7 @@ label start:
             jump rethink
     
     label rethink:
+        $ renpy.choice_for_skipping()
         l "{i}Hmm... If I align my profile with [redshark123]’s, maybe I can make him want to pick me.{/i}"
         l "{i}Now, what do I know about him? What can I change?{/i}"
         jump change_profile
@@ -487,6 +487,7 @@ label start:
             jump rethink_2
     
     label rethink_2:
+        $ renpy.choice_for_skipping()
         l "{i}So, I can mess with my profile a little again.{/i}"
         l "{i}Where would [redshark123] want to go out?{/i}"
         jump change_place
@@ -629,13 +630,13 @@ label start:
 
     # This happens after Melanie’s profile is changed
 
-    #scene [classroom]
+    # TODO: scene [classroom]
     show l at center
 
     l "{i}There, I just made a little change. Surely she won’t notice just one-{/i}"
 
     show m at right
-    #play music [angry]
+    # TODO: play music [angry]
 
     m "{color=#0f690fff}LINA{/color}!!!"
     m "I KNOW you just didn’t sabotage my profile!"
