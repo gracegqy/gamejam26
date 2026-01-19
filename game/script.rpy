@@ -17,14 +17,64 @@ define config.history_current_dialogue = True
 define config.history_length = 200
 
 
-# Bond Value
-default bond_value = 0
-screen bond_display():
-    frame:
-        align(1.0, 0.0)
-        padding(10, 10)
-        text "Bond with Player: [bond_value]"
+# # Bond Value - Discarded
+# default bond_value = 0
+# screen bond_display():
+#     frame:
+#         align(1.0, 0.0)
+#         padding(10, 10)
+#         text "Bond with Player: [bond_value]"
 
+
+# Assets
+image game_start:   #animation
+    "images/animations/game_start/frame1.png"
+    0.2
+    "images/animations/game_start/frame2.png"
+    0.1
+    "images/animations/game_start/frame3.png"
+    0.1
+    "images/animations/game_start/frame4.png"
+    0.4
+
+transform screen_shake:
+    xoffset 0 yoffset 0
+    linear 0.04 xoffset -15 yoffset 10
+    linear 0.04 xoffset 12 yoffset -8
+    linear 0.04 xoffset -10 yoffset 6
+    linear 0.04 xoffset 8 yoffset -4
+    repeat
+
+transform glitch:
+    alpha 0.0
+    linear 0.05 alpha 0.8
+    linear 0.03 alpha 0.2
+    linear 0.05 alpha 1.0
+    linear 0.04 alpha 0.1
+    xoffset 0 yoffset 0
+    linear 0.02 xoffset -6 yoffset 3
+    linear 0.02 xoffset 5 yoffset -2
+    repeat
+
+transform pos_1:
+    xalign 0.15
+    yalign 0.2
+
+transform pos_2:
+    xalign 0.5
+    yalign 0.5
+
+transform pos_3:
+    xalign 0.8
+    yalign 0.75
+
+screen glitch_overlay():
+    add "images/glitch/frame1.png" at glitch, pos_1
+    add "images/glitch/frame2.png" at glitch, pos_2
+    add "images/glitch/frame3.png" at glitch, pos_3
+
+screen single_glitch():
+    add "images/glitch/frame2.png" at glitch, pos_2
 
 # Meta File Interaction
 init python:
@@ -46,37 +96,26 @@ init python:
         except Exception:
             renpy.log("Failed to open game folder.")
 
-    def profile_detection():
+    def meta_detection(file_name, starter, splitter):
         try:
-            path = os.path.join(renpy.config.gamedir, "dating_profiles.txt")
+            path = os.path.join(renpy.config.gamedir, file_name)
 
             with open(path, "r", encoding="utf-8") as f:
                 for line in f:
                     line = line.strip().lower()
 
-                    # TODO: Fill in profile content
-                    if line.startswith("l_fav_book"):
-                        return line.split(": ", 1)[1].strip()
+                    if line.startswith(starter):
+                        return line.split(splitter, 1)[1].strip()
         
         except Exception:
-            renpy.log("Failed to get favorite book")
+            renpy.log("Failed to get info from file")
             return None
+
+    def profile_detection():
+        return meta_detection("dating_profiles.txt", "l_fav_book", ": ")
     
     def place_detection():
-        try:
-            path = os.path.join(renpy.config.gamedir, "dating_profiles.txt")
-
-            with open(path, "r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip().lower()
-
-                    # TODO: Fill in profile content
-                    if line.startswith("l_fav_hangout_spot"):
-                        return line.split(": ", 1)[1].strip()
-        
-        except Exception:
-            renpy.log("Failed to get favorite place")
-            return None
+        return meta_detection("dating_profiles.txt", "l_fav_hangout_spot", ": ")
 
 
 # Game Body
@@ -85,14 +124,14 @@ label start:
 
     # Scene 1
 
-    # TODO: play music <[happy]>
+    # TODO play music "happy.ogg"
 
     l "{i}The dating sim life is pretty simple.{/i}"
     l "{i}All you have to do is get to know people.{/i}"
     l "{i}Who knows, maybe you’ll be lucky enough for them to pick you!{/i}"
     l "{i}And if not, there’s plenty more fish in the sea.{/i}"
 
-    show screen bond_display
+    # show screen bond_display
 
     stop music
 
@@ -178,12 +217,18 @@ label start:
 
     # call screen
 
-    # TODO: play music [happy]
+    # TODO: play music "happy.ogg"
 
-    # TODO: [start button animation]
+    show game_start:
+        zoom 0.5
+        xalign 0.5
+        yalign 0.3
+    $ renpy.pause(1.0)
+    hide game_start
+    with dissolve
 
     stop music
-    # TODO: play music [coffee shop]
+    # TODO: play music "coffee_shop.ogg"
 
     "Teacher" "Alright class, it’s time to start our group project. Please make groups of four."
 
@@ -256,12 +301,17 @@ label start:
     stop music
     # TODO: play music [mysterious]
 
-    # TODO: [game breaking animation]
+    camera at screen_shake
+    show screen glitch_overlay
+
     # TODO: play sound [glitchy sounds]
 
     l "{i} What the…? {/i}"
     l "{i} What’s going on? {/i}"
     l "{i} Something’s wrong… I think it might be the game’s code! {/i}"
+
+    hide screen glitch_overlay
+    camera at default
 
     l "{i} Huh, my folder is lighting up. {/i}"
     $ import subprocess
@@ -335,16 +385,21 @@ label start:
     m "I just wanted to drop in and let you know how doomed you are."
 
     # Scene 8
-
-    # TODO: glitches appear (graceguqianying@uchicago.edu This could be an animation)
+    camera at screen_shake
+    show screen glitch_overlay
+    show screen single_glitch
     stop music
+
+    pause 1.5
+
     # TODO: play sound [glitch]
-    # TODO: A single glitch remains onscreen (show glitch)
+    camera at default
+    hide screen glitch_overlay
 
     m "What…?"
     m "What’s happening?!?"
 
-    # TODO: glitches stop
+    hide screen single_glitch
     show v at left
 
     v "Did you see that too?"
@@ -412,7 +467,6 @@ label start:
 
     # TODO: scene [classroom]
     # TODO: play music [coffee shop]
-
 
     show l at center
 

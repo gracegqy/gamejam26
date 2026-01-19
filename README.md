@@ -5,3 +5,5 @@ Team Name: !!
 Resources Employed:
 - RenPy Visual Novel Engine
 - RenPy official documentation
+
+- Seizure warning (glitch scenes)

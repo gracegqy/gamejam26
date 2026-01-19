@@ -5,9 +5,9 @@ Val
 v_fav_color: purple
 v_personality: edgy
 v_hobby: drawing
-v_fav_book: The_Shining
+v_fav_book: The Shining
 v_fav_hangout_spot: club
-v_fav_movie: The_Conjuring
+v_fav_movie: The Conjuring
 v_biggest_fear: death
 
 
@@ -17,7 +17,7 @@ m_personality: sweet
 m_hobby: makeup
 m_fav_book: n/a
 m_fav_hangout_spot: garden
-m_fav_movie: Harry_Potter
+m_fav_movie: Harry Potter
 m_biggest_fear: loneliness
 
 
@@ -25,7 +25,7 @@ Lina
 l_fav_color: green
 l_personality: sanguine
 l_hobby: reading
-l_fav_book: Chronicles_of_Narnia
+l_fav_book: Chronicles of Narnia
 l_fav_hangout_spot: cafe
 l_fav_movie: Lalaland
 l_biggest_fear: snakes
