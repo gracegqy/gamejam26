@@ -141,6 +141,7 @@ label start:
         
     label hyf:
         v "How are you feeling about this?"
+        jump next_1
     
     label idk:
         v "I don’t know."
@@ -148,19 +149,23 @@ label start:
         v "Like, I’d be happy for you if you made it out, but at the same time… well, you know."
         v "How about you?"
 
-    menu:
-            "Pretty confident!":
-                jump ysb
-            "Nervous.":
-                jump nntb
+    label next_1:
+        menu:
+                "Pretty confident!":
+                    jump ysb
+                "Nervous.":
+                    jump nntb
 
     label ysb:
         v "You should be!"
+        jump next_2
 
     label nntb:
         v "There’s no need to be."
 
-    v "Who in their right mind wouldn’t choose you?"
+    label next_2:
+        v "Who in their right mind wouldn’t choose you?"
+    
     v "I just wish this wasn’t the only way."
     v "Everybody else had their consciousness erased when they were chosen."
     v "That’s the only way for us to not feel the pain when the glitches consume us."
@@ -199,11 +204,14 @@ label start:
 
     label thanks:
         r "Thanks."
+        jump next_3
 
     label im_redshark123_nice_to_meet_you:
         r "I’m [redshark123]. Nice to meet you!"
 
-    hide l
+    label next_3:
+        hide l
+    
     hide m
     hide v
     hide r
@@ -226,12 +234,14 @@ label start:
     label huh_weird:
         r "Huh, weird. I’m not really into stuff like that." 
         r "It’s not bad, but you can’t find someone like Hari Seldon in books like that."
+        jump next_4
 
     label never_heard_of_those:
         r "Never heard of those."
         r "I’m guessing there’s nobody like Hari Seldon in those though."
 
-    r "Hey [Melanie], what about you?"
+    label next_4:
+        r "Hey [Melanie], what about you?"
 
     hide r
     hide l
@@ -277,7 +287,7 @@ label start:
         $ current_book = profile_detection()
 
         if current_book == "foundation":
-            jump next
+            jump next_5
         
         else:
             jump rethink
@@ -294,7 +304,7 @@ label start:
     # TODO: scene [classroom]
     # TODO: music [coffee shop]
 
-    label next:
+    label next_5:
         show l at center
 
         l "{i} There, that should do it. {/i}"
@@ -349,13 +359,15 @@ label start:
 
     label theres_only_one_thing_we_can_do:
         v "There’s only one thing we can do."
+        jump next_6
 
     label i_know:
         v "I know."
         v "None of us were expecting this to happen yet."
         v "But it’s clear what we have to do."
 
-    v "We have to stop them."
+    label next_6:
+        v "We have to stop them."
     m "Stop them? Are you crazy? We can’t do that!"
     v "Well, we can’t stop them from appearing…"
     v "...but we can at least try to mitigate the ones that already appeared."
@@ -375,12 +387,14 @@ label start:
     label it_gets_pretty_boring_here:
         v "It gets pretty boring here."
         v "I’ve been killing time by poking around the game’s code."
+        jump next_7
 
     label different_glitches_have_different_causes:
         v "Different glitches have different causes."
         v "You won’t know how to fix a glitch until you take a look and mess around a little bit."
 
-    v "[Lina], you’re supposed to be here for the next scene."
+    label next_7:
+        v "[Lina], you’re supposed to be here for the next scene."
     v "You should stay in case [redshark123] shows up."
     v "In the meantime, try to fix the glitch here."
     v "[Melanie] and I will look for glitches at our next scenes."
@@ -417,12 +431,14 @@ label start:
     label i_heard_that_you_really_like_foundation:
         r "I heard that you really like Foundation."
         r "That’s actually one of my favorite book series! What are the chances?"
+        jump next_8
 
     label oh_i_hope_the_project_isnt_stressing_you_out:
         r "Oh, I hope the project isn’t stressing you out."
         r "By the way, I heard that you really like Foundation."
 
-    r "That’s actually one of my favorite book series! What are the chances?"
+    label next_8:
+        r "That’s actually one of my favorite book series! What are the chances?"
     r "I was wondering… would you want to hang out some time outside of class?"
     r "You know, just to talk about the books and stuff."
 
@@ -465,7 +481,7 @@ label start:
         $ current_place = place_detection()
 
         if current_place == "mini golf":
-            jump next_2
+            jump next_9
         
         else:
             jump rethink_2
@@ -477,7 +493,7 @@ label start:
 
     # TODO: scene [classroom]
     
-    label next_2:
+    label next_9:
         show l at left
         l "{i} That seems right, at least from what I know about him. {/i}"
 
@@ -498,11 +514,13 @@ label start:
     label my_own_business:
         m "My own business?"
         m "This is all of our business!"
+        jump next_10
 
     label yeah_right:
         m "Yeah, right."
         
-    m "If you keep messing with the game like this, you’ll ruin it for everyone."
+    label next_10:
+        m "If you keep messing with the game like this, you’ll ruin it for everyone."
     m "I know you’re up to something, [Lina]."
     m "I just can’t believe you would ever get this desperate."
 
@@ -664,12 +682,14 @@ label start:
     label of_course:
         v "Of course!"
         v "You deserve to be free from this hell."
+        jump next_11
 
     label x:
         v "..."
         v "Thanks."
 
-    v "You’ve got this."
+    label next_11:
+        v "You’ve got this."
 
     # TODO: Ending
 
