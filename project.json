@@ -1,8 +1,7 @@
 {
   "build_update": false,
   "packages": [
-    "pc",
-    "mac",
+    "market",
     "win"
   ],
   "add_from": true,

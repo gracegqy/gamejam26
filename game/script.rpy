@@ -71,7 +71,7 @@ init python:
                     line = line.strip().lower()
 
                     # TODO: Fill in profile content
-                    if line.startswith("l_fav_place"):
+                    if line.startswith("l_fav_hangout_spot"):
                         return line.split(": ", 1)[1].strip()
         
         except Exception:
@@ -276,7 +276,7 @@ label start:
     label change_profile:
         $ current_book = profile_detection()
 
-        if current_book == "foundation" or current_book == "Foundation":
+        if current_book == "foundation":
             jump next
         
         else:
@@ -464,7 +464,7 @@ label start:
     label change_place:
         $ current_place = place_detection()
 
-        if current_place == "mini golf" or current_place == "Mini Golf" or current_place == "Mini golf":
+        if current_place == "mini golf":
             jump next_2
         
         else:
@@ -529,7 +529,7 @@ label start:
     r "…could I take you out for real? Like, on a date?"
 
     stop music
-    # Menu options that say “Yes” and “No” show up, but before the player can click either of them, #another glitch animation plays and glitch sprites block the options. While this is going on, redshark123 #asks the player why they’re not responding, but they’re powerless about it (how much of this is doable    #graceguqianying@uchicago.edu? I thought this would be cool, but we definitely don’t need all of it.
+    # TODO: Menu options that say “Yes” and “No” show up, but before the player can click either of them, #another glitch animation plays and glitch sprites block the options. While this is going on, redshark123 #asks the player why they’re not responding, but they’re powerless about it (how much of this is doable    #graceguqianying@uchicago.edu? I thought this would be cool, but we definitely don’t need all of it.
 
     l "{i} Oh no, another glitch! Could the timing be any worse? {/i}"
     l "{i} I need to get rid of this so [redshark123] can pick me! {/i}"
