@@ -151,15 +151,50 @@ init python:
 
     def profile_detection():
         return meta_detection("dating_profiles.txt", "l_fav_book", ": ")
+
+    def profile_detection_2():
+        return meta_detection("dating_profiles.txt", "m_biggest_fear", ": ")
     
     def place_detection():
         return meta_detection("dating_profiles.txt", "l_fav_hangout_spot", ": ")
 
     def glitch_detection_1():
-        return meta_detection("aSsETs.txt", "button", "= ")
+        try:
+            path = os.path.join(renpy.config.gamedir, "aSsETs.txt")
 
+            total = ""
+
+            with open(path, "r") as f:
+                for line in f:
+                    total += line
+
+                if total == "":
+                    return True
+            
+            return False
+        
+        except Exception:
+            renpy.log("Failed to get info from file")
+            return None
+    
     def glitch_detection_2():
-        return meta_detection("aSsETs.txt", "font", "= ")
+        try:
+            path = os.path.join(renpy.config.gamedir, "loader.txt")
+
+            total = ""
+
+            with open(path, "r") as f:
+                for line in f:
+                    total += line
+
+                if total == "":
+                    return True
+            
+            return False
+        
+        except Exception:
+            renpy.log("Failed to get info from file")
+            return None
 
     def change_timestamp(path):
         try:
@@ -411,13 +446,13 @@ label start:
 
     # Scene 7
 
-    hide screen display_obj
-    with dissolve
-
-    stop music
-    play music coffee fadein 1.0
-
     label next_5:
+        hide screen display_obj
+        with dissolve
+
+        stop music
+        play music coffee fadein 1.0
+        
         show l at center
 
         l "{i} There, that should do it. {/i}"
@@ -535,6 +570,10 @@ label start:
     $ import subprocess
     $ import sys
     $ import os
+
+    $ profile = os.path.join(renpy.config.gamedir, "aSsETs.txt")
+    $ success = change_timestamp(profile)
+
     $ open_game_folder()  # Folder pops up
 
     # Scene 9
@@ -542,10 +581,7 @@ label start:
     # To remove the glitch, you need to remove all anomolous text in aSsETs.txt
 
     label fix_glitch:
-        $ glitch_1 = glitch_detection_1()
-        $ glitch_2 = glitch_detection_2()
-
-        if glitch_1 == "" and glitch_2 == "":
+        if glitch_detection_1() == True:
             jump next_12
         
         else:
@@ -658,18 +694,18 @@ label start:
         l "{i}So, I can mess with my profile a little again.{/i}"
         l "{i}Where would [redshark123] want to go out?{/i}"
         jump change_place
-
-    hide screen display_obj
-    with dissolve
-
-    scene classroom
     
     label next_9:
+        hide screen display_obj
+        with dissolve
+
+        scene classroom
+
         show l at left
         l "{i} That seems right, at least from what I know about him. {/i}"
 
     play music tension fadein 1.0
-    show r at right
+    show m at right
 
     m "So, you like Foundation now?"
     m "[redshark123] told me all about it."
@@ -733,6 +769,7 @@ label start:
     # Glitch effect again
     camera at screen_shake
     show screen glitch_overlay
+    play sound glitch2
 
     l "{i} Oh no, another glitch! That must be what’s causing my response to not go through.{/i}"
     l "{i}Could the timing be any worse?{/i}"
@@ -745,18 +782,30 @@ label start:
     $ import sys
     $ import os
 
-    $ profile = os.path.join(renpy.config.gamedir, "<file_name>")
+    $ profile = os.path.join(renpy.config.gamedir, "loader.txt")
     $ success = change_timestamp(profile)
 
     $ open_game_folder()  # Folder pops up
 
     # Scene 12
 
-    # TODO: The second glitchy folder is harder to spot. Partway through the game, the timestamp of one of the otherwise normal-looking folders changes to Jan 1, 1970, which is obviously not correct.
+    label fix_glitch_2:
+        if glitch_detection_2() == True:
+            jump next_13
+        
+        else:
+            jump rethink_4
+    
+    label rethink_4:
+        $ renpy.choice_for_skipping()
+        l "{i}I need to find the glitch! Is there a file that seems weirdly recent?{/i}"
+        jump fix_glitch_2
+
+    label next_13:
+        hide screen glitch_overlay
+        camera at default
 
     scene classroom
-    camera at default
-    hide screen glitch_overlay
     stop music
 
     show l at center
@@ -798,7 +847,7 @@ label start:
 
     l "{i}Unless…{/i}"
     l "{i}What if I changed [Melanie]’s a little?{/i}"
-    l "Maybe I can edit hers the same way I can with mine! I could just sabotage her a little.{/i}"
+    l "{i}Maybe I can edit hers the same way I can with mine! I could just sabotage her a little.{/i}"
 
     l "{i}...What am I saying? I shouldn’t do that. It’s not right.{/i}"
     l "{i}But it’s me or her. I’m not hurting [Melanie], I’m just using all the tools at my disposal.{/i}"
@@ -810,13 +859,26 @@ label start:
     $ open_game_folder()  # Folder pops up
 
     # Scene 14
-
-    # TODO: This puzzle doesn’t use any clues outside what’s in the dialogue. Once you understand that you’re supposed to be ruining someone else’s chances instead of boosting your own, the solution is pretty simple. Since redshark123 mentioned having a pet spider, you should update Melanie’s fear to spiders.
-
     # This happens after Melanie’s fear is changed to spiders
 
-    scene classroom
-    show l at center
+    label change_profile_2:
+        $ mel = profile_detection_2()
+
+        if mel == ("spider" or "spiders"):
+            jump next_14
+        
+        else:
+            jump rethink_5
+    
+    label rethink_5:
+        $ renpy.choice_for_skipping()
+        l "{i}Ok, what do I know that [redshark123] likes?{/i}"
+        l "{i}If I could make Melanie hate it...{/i}"
+        jump change_profile_2
+
+    label next_14:
+        scene classroom
+        show l at center
 
     l "{i}There, I just made a little change. Surely she won’t notice just one-{/i}"
 
@@ -886,8 +948,6 @@ label start:
     play music tension fadein 1.0
     default unsettledness = 0
 
-    # TODO: This final segment keeps track of your responses and determines at the end if you’ve weirded out #redshark123 too much.
-
     r "Hey [Lina]."
     r "I’m ready to get this wrapped up with, so I’m just gonna go ahead and pick you."
     r "Man, this game is so weird."
@@ -951,7 +1011,7 @@ label start:
         "You’re right. It’s a sacrifice no matter what.":
             jump what
 
-    label yeah_but_im_over_this:
+    label yeah_but_im_over_all_this:
         $ unsettledness -=1
         r "Yeah, but I’m over this."
         r "[Melanie] is getting all huffy, and I was never into [Val]."
@@ -1156,11 +1216,11 @@ label start:
 
     menu: 
         "You’ve been helping me?":
-            jump you’ve_been_able_to_update_our_profiles_right
+            jump youve_been_able_to_update_our_profiles_right
         "What do you mean?":
-            jump you’ve_been_able_to_update_our_profiles_right
+            jump youve_been_able_to_update_our_profiles_right
 
-    label you’ve_been_able_to_update_our_profiles_right:
+    label youve_been_able_to_update_our_profiles_right:
         v "You’ve been able to update our profiles, right?"
         v "Well, that’s because of me."
         v "I’ve learned a lot about how to alter this game’s code…"
@@ -1190,7 +1250,7 @@ label start:
             jump end
 
     label end:
-        scene white
+        scene black
 
     pause 5.0
 
