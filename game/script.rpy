@@ -27,15 +27,23 @@ define config.history_current_dialogue = True
 
 # Assets
 # Characters
-image l = "images/characters/lina.png"
-image v = "images/characters/val.png"
-image m = "images/characters/melanie.png"
-image r = "images/characters/redshark123.png"
+image l = im.Scale("images/characters/lina.png", 400, 600)
+image v = im.Scale("images/characters/val.png", 400, 600)
+image m = im.Scale("images/characters/melanie.png", 400, 600)
+image r = im.Scale("images/characters/redshark123.png", 400, 600)
 
 # Backgrounds
-image classroom = "images/backgrounds/classroom.png"
+image classroom = "images/backgrounds/classroom.jpg"
 
 # Sounds
+define audio.coffee = "audio/coffee_shop_music.mp3"
+define audio.happy = "audio/happy_music.mp3"
+define audio.glitch1 = "audio/glitch_noise_1.mp3"
+define audio.glitch2 = "audio/glitch_noise_2.mp3"
+define audio.glitch3 = "audio/glitch_noise_3.mp3"
+define audio.mysterious = "audio/mysterious_music.mp3"
+define audio.tension = "audio/tension_music.mp3"
+define audio.romantic = "audio/romantic_music.mp3"
 
 # Animation
 image game_start:   #animation
@@ -148,13 +156,10 @@ init python:
         return meta_detection("dating_profiles.txt", "l_fav_hangout_spot", ": ")
 
     def glitch_detection_1():
-        return meta_detection("assets.txxt", "<text>", ": ")
+        return meta_detection("aSsETs.txt", "button", "= ")
 
     def glitch_detection_2():
-        return meta_detection("assets.txxt", "<text>", ": ")
-
-    def glitch_detection_3():
-        return meta_detection("assets.txxt", "<text>", ": ")
+        return meta_detection("aSsETs.txt", "font", "= ")
 
     def change_timestamp(path):
         try:
@@ -172,7 +177,7 @@ label start:
 
     # Scene 1
 
-    # TODO play music "happy.ogg"
+    play music happy fadein 1.0
 
     l "{i}The dating sim life is pretty simple.{/i}"
     l "{i}All you have to do is get to know people.{/i}"
@@ -181,7 +186,7 @@ label start:
 
     # show screen bond_display
 
-    stop music
+    stop music fadeout 1.0
 
     l "{i}At least, that’s how it used to be.{/i}"
     l "{i}Now, every play session is a death match to win the player’s appreciation.{/i}"
@@ -263,7 +268,7 @@ label start:
     hide v
     hide l
 
-    # TODO: play music "happy.ogg"
+    play music happy fadein 1.0
 
     show game_start:
         zoom 0.5
@@ -273,9 +278,9 @@ label start:
     hide game_start
     with dissolve
 
-    stop music
-    # TODO: play music "coffee_shop.ogg"
-    # TODO: screen [classroom]
+    stop music fadeout 1.0
+    play music coffee fadein 1.0
+    scene classroom
 
     "Teacher" "Alright class, it’s time to start our group project. Please make groups of four."
 
@@ -344,12 +349,12 @@ label start:
     # Scene 6
 
     stop music
-    # TODO: play music [mysterious]
+    play music mysterious fadein 1.0
 
     camera at screen_shake
     show screen glitch_overlay
 
-    # TODO: play sound [glitchy sounds]
+    play sound glitch2
 
     l "{i} What the…? {/i}"
     l "{i} What’s going on? {/i}"
@@ -379,7 +384,12 @@ label start:
     l "{i}Maybe there’s something in the classroom that I can use.{/i}"
     l "{i}Is there anything in here about books?{/i}"
 
-    # TODO: Wait for players to click on the “What’s Ms. G Reading?” poster
+    l "{i}...{/i}"
+    l "{i}Oh! There’s a poster on the wall for book recs!{/i}"
+
+    $ obj_image = "images/clues/book_poster.png"
+    show screen display_obj
+    with dissolve
 
     l "{i}Yes! I bet this can help!{/i}"
 
@@ -394,18 +404,18 @@ label start:
     
     label rethink:
         $ renpy.choice_for_skipping()
-        l "{i}Hmm, what do I know about {b}redshark123{/b}?{/i}"
+        l "{i}Hmm, what do I know about [redshark123]?{/i}"
         l "{i}How can I figure out if he likes any of these books?{/i}"
         l "{i}I should also remember to click ctrl+s to save the changes I make to my profile.{/i}"
         jump change_profile
 
     # Scene 7
 
-    # TODO: A poster in the classroom that can be added to the folder and viewed when clicked (I can design it)
+    hide screen display_obj
+    with dissolve
 
     stop music
-
-    # TODO: music [coffee shop]
+    play music coffee fadein 1.0
 
     label next_5:
         show l at center
@@ -442,10 +452,10 @@ label start:
     show screen glitch_overlay
     show screen single_glitch
     stop music
+    play sound glitch3
 
     pause 1.5
 
-    # TODO: play sound [glitch]
     camera at default
     hide screen glitch_overlay
 
@@ -529,14 +539,13 @@ label start:
 
     # Scene 9
 
-    # TODO: To remove the glitch, you need to delete all of the text in a folder that’s “out of place”. The out of place folder here is called assets.txxt (there’s an extra x, and more tech-savvy players would know that you wouldn’t use a .txt folder for assets.)
+    # To remove the glitch, you need to remove all anomolous text in aSsETs.txt
 
     label fix_glitch:
         $ glitch_1 = glitch_detection_1()
         $ glitch_2 = glitch_detection_2()
-        $ glitch_3 = glitch_detection_3()
 
-        if glitch_1 == "<smth>" and glitch_2 == "<smth>" and glitch_3 == "<smth>":
+        if glitch_1 == "" and glitch_2 == "":
             jump next_12
         
         else:
@@ -551,8 +560,8 @@ label start:
     label next_12:
         hide screen single_glitch
 
-    # TODO: scene [classroom]
-    # TODO: play music [coffee shop]
+    scene classroom
+    play music coffee fadein 1.0
 
     show l at center
 
@@ -612,10 +621,15 @@ label start:
     l "{i}But before I change anything, I should find something that lists the places available to me.{/i}"
     l "{i}That way, I’ll know what I can work with.{/i}"
 
-    # TODO: Wait for players to click on the note in the classroom
+    l "{i}Oh I know! I saved a note from the Town Fair about places to go{/i}"
+    l "{i}Here it is!{/i}"
+
+    $ obj_image = "images/clues/note.png"
+    show screen display_obj
+    with dissolve
 
     l "{i}This is perfect{/i}"
-    l "{i}Which of these things would {b}redshark123{/b} most want to do?{/i}"
+    l "{i}Which of these things would [redshark123] most want to do?{/i}"
 
 
     $ import subprocess
@@ -627,9 +641,8 @@ label start:
 
     # Scene 10
 
-    # TODO: Notes written between two classmates that mention all the hangout spots in town
-    # TODO: The ability to change the “favorite place” via dropdown or text entry
-    # TODO: The game to continue when the favorite place spot is changed to mini golf
+    # Notes written between two classmates that mention all the hangout spots in town
+    # The game to continue when the favorite place spot is changed to mini golf
 
     label change_place:
         $ current_place = place_detection()
@@ -646,13 +659,16 @@ label start:
         l "{i}Where would [redshark123] want to go out?{/i}"
         jump change_place
 
-    # TODO: scene [classroom]
+    hide screen display_obj
+    with dissolve
+
+    scene classroom
     
     label next_9:
         show l at left
         l "{i} That seems right, at least from what I know about him. {/i}"
 
-    # TODO: play music [tension]
+    play music tension fadein 1.0
     show r at right
 
     m "So, you like Foundation now?"
@@ -690,7 +706,7 @@ label start:
     hide m
     hide l
     show l at truecenter
-    # TODO: play music [romantic]
+    play music romantic fadein 1.0
 
     r "[Lina], I just found out that you like mini golfing. I’m a fan too."
     r "First Foundation, and now this…"
@@ -711,7 +727,7 @@ label start:
 
     label hello:
         r "Hello?"
-        r "Lina, I’m talking to you."
+        r "[Lina], I’m talking to you."
         l "{i}Why can’t he see my response?{/i}"
 
     # Glitch effect again
@@ -720,8 +736,8 @@ label start:
 
     l "{i} Oh no, another glitch! That must be what’s causing my response to not go through.{/i}"
     l "{i}Could the timing be any worse?{/i}"
-    l "{i}I need to get rid of this so {b}redshark123{/b} can hurry up and choosepick me!{/i}"
-    l "{i}Ok Lina, remember:{/i}"
+    l "{i}I need to get rid of this so [redshark123] can hurry up and choose me!{/i}"
+    l "{i}Ok [Lina], remember:{/i}"
     l "{i}I need to find a game file that looks out of place, and then delete the corrupted text in it.{/i}"
 
     #show files
@@ -736,9 +752,9 @@ label start:
 
     # Scene 12
 
-    # TODO: For the second glitch puzzle, I was thinking of something different than rush hour. Another puzzle that I think could work well in ren.py is a nonogram, in which you have a 10x10 grid with numbers next to each row and column. The numbers tell you how many squares should be filled in their respective row/column, and you must fill them accordingly. Here’s an example: Do you think you can code this, graceguqianying@uchicago.edu? Again, if not, we can always change the puzzle.
+    # TODO: The second glitchy folder is harder to spot. Partway through the game, the timestamp of one of the otherwise normal-looking folders changes to Jan 1, 1970, which is obviously not correct.
 
-    # TODO: scene [classroom]
+    scene classroom
     camera at default
     hide screen glitch_overlay
     stop music
@@ -751,7 +767,7 @@ label start:
 
     r "Okay, [Lina], I get it."
 
-    # TODO: play music [tension]
+    play music tension fadein 1.0
 
     r "You could have just said that you’re not interested."
     r "There’s no need for the silent treatment."
@@ -772,13 +788,13 @@ label start:
     l "{i}Aargh! I was so close!{/i}"
     l "{i}He was about to give me a ticket out of this place!{/i}"
     l "{i}I need him to pick me. I don’t want to be left to suffer here.{/i}"
-    l "{i}}I would even be okay with it if he chose Val! At least she would be happy.{/i}"
+    l "{i}}I would even be okay with it if he chose [Val]! At least she would be happy.{/i}"
     l "{i}But [Melanie]? She doesn’t deserve to be free!{/i}"
     l "{i}The worst part is that I can’t fix it by changing my profile this time.{/i}"
     l "{i}I think… I think this is it.{/i}"
 
     # Scene 13
-    # TODO: play music [tension]
+    play music tension fadein 1.0
 
     l "{i}Unless…{/i}"
     l "{i}What if I changed [Melanie]’s a little?{/i}"
@@ -799,13 +815,13 @@ label start:
 
     # This happens after Melanie’s fear is changed to spiders
 
-    # TODO: scene [classroom]
+    scene classroom
     show l at center
 
     l "{i}There, I just made a little change. Surely she won’t notice just one-{/i}"
 
     show m at right
-    # TODO: play music [angry]
+    play music tension fadein 1.0
 
     m "{color=#0f690fff}LINA{/color}!!!"
     m "I KNOW you didn’t just sabotage my profile!"
@@ -867,7 +883,7 @@ label start:
     hide l
     show l at center
     show r at truecenter
-    # TODO: music [tension]
+    play music tension fadein 1.0
     default unsettledness = 0
 
     # TODO: This final segment keeps track of your responses and determines at the end if you’ve weirded out #redshark123 too much.
@@ -877,7 +893,7 @@ label start:
     r "Man, this game is so weird."
     r "Aren’t you all supposed to be flat, just one-dimensional characterspeople?"
     r "How am I supposed to pick one of you to date when you’re changing all the time?"
-    r "Like, I wanted to go with Melanie, but then I realized that all of a sudden she hates spiders."
+    r "Like, I wanted to go with [Melanie], but then I realized that all of a sudden she hates spiders."
     r "I don’t know why this game is making it so hard for me…"
     r "…but it seems like it’s pushing me toward you."
     r "So there. I choose you. Are you happy, game?"
@@ -890,22 +906,22 @@ label start:
             jump huh_you_see_thats_what_i_would_expect_you_to_say
 
     label see_thats_what_im_talking_about:
-    $ unsettledness +=1
-    r "See? That’s what I’m talking about."
-    jump i_cant_help_but_feel_like_all_of_you_are_fixated_on_me_picking_you
+        $ unsettledness +=1
+        r "See? That’s what I’m talking about."
+        jump i_cant_help_but_feel_like_all_of_you_are_fixated_on_me_picking_you
 
 
     label huh_you_see_thats_what_i_would_expect_you_to_say:
-    $ unsettledness -=1
-    r "Huh. You see, that’s what I would expect."
-    r "Maybe it was just a glitch earlier."
-    r "But…"
-    jump i_cant_help_but_feel_like_all_of_you_are_fixated_on_me_picking_you
+        $ unsettledness -=1
+        r "Huh. You see, that’s what I would expect."
+        r "Maybe it was just a glitch earlier."
+        r "But…"
+        jump i_cant_help_but_feel_like_all_of_you_are_fixated_on_me_picking_you
 
     label i_cant_help_but_feel_like_all_of_you_are_fixated_on_me_picking_you: 
-    r "I can’t help but feel like all of you are fixated on me picking you."
-    r "And not in a romantic way… more like you’re desperate."
-    r "Why is that?"
+        r "I can’t help but feel like all of you are fixated on me picking you."
+        r "And not in a romantic way… more like you’re desperate."
+        r "Why is that?"
 
     menu:
         "We all just want to be with you!":
@@ -914,20 +930,20 @@ label start:
             jump what_the_heck
 
     label ok:
-    $ unsettledness -=1
-    r "Ok…"
-    jump so_it_doesnt_matter_who_i_pick
+        $ unsettledness -=1
+        r "Ok…"
+        jump so_it_doesnt_matter_who_i_pick
 
     label what_the_heck:
-    $ unsettledness +=1
-    r "What the heck?"
-    r "What’s complicated?"
-    r "This is a video game. You’re overreacting."
-    r "God, why am I even talking to an NPC? It’s not like you’re real."
-    jump so_it_doesnt_matter_who_i_pick
+        $ unsettledness +=1
+        r "What the heck?"
+        r "What’s complicated?"
+        r "This is a video game. You’re overreacting."
+        r "God, why am I even talking to an NPC? It’s not like you’re real."
+        jump so_it_doesnt_matter_who_i_pick
 
     label so_it_doesnt_matter_who_i_pick:
-    r "So it doesn’t matter who I pick."
+        r "So it doesn’t matter who I pick."
 
     menu:
         "If you’re happier with someone else, then I guess you can datepick them instead…":
@@ -936,27 +952,27 @@ label start:
             jump what
 
     label yeah_but_im_over_this:
-    $ unsettledness -=1
-    r "Yeah, but I’m over this."
-    r "[Melanie] is getting all huffy, and I was never into Val."
-    r "That’s the only reason I’m talking to you."
-    r "You’re the least weird one here."
-    jump unsettledness_tally
+        $ unsettledness -=1
+        r "Yeah, but I’m over this."
+        r "[Melanie] is getting all huffy, and I was never into [Val]."
+        r "That’s the only reason I’m talking to you."
+        r "You’re the least weird one here."
+        jump unsettledness_tally
 
     label what:
-    $ unsettledness +=1
-    r "WHAT"
-    r "THE"
-    r "HELL"
-    r "Are you talking about?"
-    jump unsettledness_tally
+        $ unsettledness +=1
+        r "WHAT"
+        r "THE"
+        r "HELL"
+        r "Are you talking about?"
+        jump unsettledness_tally
 
 
     label unsettledness_tally:
-    if unsettledness <= 0:
-        jump well_maybe_i_was_wrong_about_this_game
-    else: 
-        jump thats_it
+        if unsettledness <= 0:
+            jump well_maybe_i_was_wrong_about_this_game
+        else: 
+            jump thats_it
 
     # Scene 17
 
@@ -969,7 +985,7 @@ label start:
     r "I’m out of here."
 
     hide r
-    # TODO: hide [classroom]
+    scene black
     show v at left
     show m at right
 
@@ -1006,7 +1022,7 @@ label start:
     label you_are:
         v "You are?"
         m "Yeah. Look, I’ve been thinking."
-        m "What you said was right, Val. We’re NPCs in a video game. Do any of our lives really matter?"
+        m "What you said was right, [Val]. We’re NPCs in a video game. Do any of our lives really matter?"
         m "It doesn’t matter who makes it out of this place."
         m "It’s not like one of us is more valuable than the others."
         m "So, I’m sorry that I acted like I was more entitled than you."
@@ -1021,7 +1037,7 @@ label start:
     menu: 
         "I guess so.":
             jump i_love_you_lina
-        "I don’t want to leave you, Val.":
+        "I don’t want to leave you, [Val].":
             jump i_dont_want_to_leave_you_either
 
     label i_dont_want_to_leave_you_either:
@@ -1029,9 +1045,12 @@ label start:
         jump i_love_you_lina
 
     label i_love_you_lina:
-        # TODO: glitch animation
+        camera at screen_shake
+        show screen glitch_overlay
+        stop music
+        play sound glitch3
 
-    v "I love you Lina."
+    v "I love you [Lina]."
     v "I’m sorry it had to end like this."
     v "And I’m sorry I couldn’t do enough to save you."
 
@@ -1042,13 +1061,13 @@ label start:
             jump theres_no_time_to_explain_now
 
     label goodbye_lina:
-        v "Goodbye, Lina."
+        v "Goodbye, [Lina]."
         jump multiple_dangerous_files_detected
 
     label theres_no_time_to_explain_now:
         v "There’s no time to explain now."
         v "Maybe in another life, I could tell you."
-        v "Goodbye, Lina."
+        v "Goodbye, [Lina]."
         jump multiple_dangerous_files_detected
 
     label multiple_dangerous_files_detected:
@@ -1059,6 +1078,9 @@ label start:
         "01110111 01101001 01101100 01101100"
         "01101110 01100101 01110110 0"
         "01110010 01100101 01100001 01101100"
+        camera at default
+        hide screen glitch_overlay
+
         $ MainMenu(confirm=False) ()
 
     # Scene 18: End
@@ -1073,12 +1095,12 @@ label start:
         r "I’m just glad this is over."
 
     hide r
-    # TODO: hide [classroom]
+    scene black
     show v at left
     show m at right
 
-    m "Hey. The game just told me that {b}redshark123{/b} picked you."
-    v "Congrats, Lina!"
+    m "Hey. The game just told me that [redshark123] picked you."
+    v "Congrats, [Lina]!"
 
     menu: 
         "Thanks, I guess.":
@@ -1099,12 +1121,12 @@ label start:
         m "Me too."
         v "Wait, what? I wasn’t expecting that from you."
         m "Well, look, I’ve been thinking."
-        m "What you said was right, Val. We’re NPCs in a video game. Do any of our lives really matter?"
+        m "What you said was right, [Val]. We’re NPCs in a video game. Do any of our lives really matter?"
         m "It doesn’t matter who makes it out of this place."
         m "It’s not like one of us is more valuable than the others."
         m "So, I’m sorry that I acted like I was more entitled than you."
         m "And I’m happy that at least one of us can make it out of here alive."
-        m "So congrats, Lina."
+        m "So congrats, [Lina]."
         m "Is it okay if I leave? I want to spend my final moments alone."
         v "Of course. Yeah. Go ahead."
 
@@ -1143,31 +1165,35 @@ label start:
         v "Well, that’s because of me."
         v "I’ve learned a lot about how to alter this game’s code…"
         v "…and decided to use it to help you win."
-        v "I thought you would have an edge against Melanie if you could change the game in real time."
+        v "I thought you would have an edge against [Melanie] if you could change the game in real time."
         v "I didn’t want to tell you before because I thought you’d object."
         v "But there’s no harm in saying so now."
 
     menu: 
         "You did all of that for me?":
             jump i_wouldnt_have_it_any_other_way
-        "But Val! That means you’re sacrificing yourself!":
+        "But [Val]! That means you’re sacrificing yourself!":
             jump i_wouldnt_have_it_any_other_way
 
     label i_wouldnt_have_it_any_other_way:
         v "I wouldn’t have it any other way."
         v "I want you to be happy."
 
-    # TODO: scene blank_screen.png with fade
+    scene black with fade
 
-    v "It looks like you’re leaving now. Goodbye, Lina. I love you."
+    v "It looks like you’re leaving now. Goodbye, [Lina]. I love you."
 
-    menu: 
-        "Val! Don’t go!":
+    menu:
+        "[Val]! Don’t go!":
             jump end
         "I’ll never forget you!":
             jump end
 
     label end:
-    # TODO: The screen stays on the blank white void for a couple seconds, then:
+        scene white
+
+    pause 5.0
+
+    "Thank you for playing!"
 
     return
