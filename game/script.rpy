@@ -185,7 +185,7 @@ label start:
 
     l "{i}At least, that’s how it used to be.{/i}"
     l "{i}Now, every play session is a death match to win the player’s appreciation.{/i}"
-    l "{i}If you aren’t interesting enough for anybody…{/i}"
+    l "{i}And if you aren’t interesting enough for anybody…{/i}"
     l "{i}Well, just hope that doesn’t happen.{/i}"
 
     # Scene 2
@@ -194,9 +194,8 @@ label start:
     show l at center
     show v at left
 
-    m "And then there were three."
     m "I can’t believe I’ve been stuck in this hell with you losers for so long."
-    m "I can’t wait for this dweeb to choose me so I can get out of here."
+    m "I can’t wait for this guy to choose me so I can get out of here."
 
     menu:
         "Nice to see you too, [Melanie].":
@@ -208,7 +207,7 @@ label start:
     label choice1:
         m "Whatever."
         v "[Melanie], whoever wins, wins. We can all try our best, but it’s ultimately up to the player."
-        m "Well, why wouldn’t he choose me? What could you possibly have that I don't?"
+        m "Well, why wouldn’t he choose me? What could you two possibly have that I don't?"
         m "Now if you’ll excuse me, I need to go prepare. I have a player to impress."
 
     hide m
@@ -254,16 +253,15 @@ label start:
         v "Who in their right mind wouldn’t choose you?"
     
     v "I just wish this wasn’t the only way."
-    v "Everybody else had their consciousness erased when they were chosen."
-    v "That’s the only way for us to not feel the pain when the glitches consume us."
+    v "Every other character’s consciousness was released into the world when they were chosen."
+    v "That’s the only way to escape the glitches before they inevitably consume the game."
+    v "I just wish that there was enough time for us each to be picked by someone before time runs out."
     v "Just know that no matter what happens, I’m glad that we got to spend time together."
 
     # Scene 4
 
     hide v
     hide l
-
-    # call screen
 
     # TODO: play music "happy.ogg"
 
@@ -277,6 +275,7 @@ label start:
 
     stop music
     # TODO: play music "coffee_shop.ogg"
+    # TODO: screen [classroom]
 
     "Teacher" "Alright class, it’s time to start our group project. Please make groups of four."
 
@@ -287,7 +286,7 @@ label start:
 
     r "Hey! Is it alright if I group up with you three?"
     m "Of course!!! I always love to meet new people! <3"
-    v "Ugh, fine. Just don't interrupt me while I'm brooding."
+    v "Ugh, fine. Just don't interrupt me when I'm brooding."
 
     menu:
         "Welcome to the group!":
@@ -326,7 +325,7 @@ label start:
 
     label huh_weird:
         r "Huh, weird. I’m not really into stuff like that." 
-        r "It’s not bad, but you can’t find someone like Hari Seldon in books like that."
+        r "It’s not bad, but you can’t find someone as cool as Hari Seldon in books like that."
         jump next_4
 
     label never_heard_of_those:
@@ -337,12 +336,10 @@ label start:
         r "Hey [Melanie], what about you?"
 
     hide r
-    hide l
-    show l at truecenter
 
     l "{i}Oh no, he isn’t interested in me at all! But how am I going to get out of this place if I can’t get him to pick me?{/i}"
     l "{i} There’s nothing I can do. Like [Val] said, it’s ultimately up to the player. But I was hoping… maybe… I thought maybe this time I would finally be free.{/i}"
-    l "{i}I guess that’s it then. I’m done for.{/i}"
+    l "{i}This was my last chance! I’m done for.{/i}"
 
     # Scene 6
 
@@ -367,18 +364,24 @@ label start:
     $ import os
     $ open_game_folder()  # Folder pops up
 
-    l "{i} Usually that’s where I keep stuff I collect as the game goes on, but maybe something’s up with it. {/i}"
-    l "{i} Wait, what? Why is my {b}dating profile{/b} in my folder? {/i}"
-    l "{i} That has all the information about me so the player can decide if they like me… {/i}"
-    l "{i} …but usually I’m not able to access it. {/i}"
+    l "{i} We NPCs usually don’t have access to that… {/i}"
+    l "{i} Wait, I think I see our {b}dating profiles{/b} listed among the files. {/i}"
+    l "{i} That has all the information about usme so the player can decide who they like the most… {/i}"
 
     # Profile Interaction
 
-    l "{i} Wait, I can change stuff? I’ve never been able to do that before!{/i}"
     l "{i} This must be because of one of those glitches {/i}"
     l "{i} Maybe… could I use this to my advantage {/i}"
-    l "{i} If I can my profile align with [redshark123]’s, maybe I can make him want to pick me {/i}"
+    l "{i} If I can change my profile to align with [redshark123]’s, maybe I can make him want to pick me! {/i}"
     l "{i} Now, what do I know about him? What can I change? {/i}"
+    l "{i}Let’s see… we were talking about books earlier.{/i}"
+    l "{i}I need more information to figure out what book he likes the most.{/i}"
+    l "{i}Maybe there’s something in the classroom that I can use.{/i}"
+    l "{i}Is there anything in here about books?{/i}"
+
+    # TODO: Wait for players to click on the “What’s Ms. G Reading?” poster
+
+    l "{i}Yes! I bet this can help!{/i}"
 
     label change_profile:
         $ current_book = profile_detection()
@@ -391,15 +394,17 @@ label start:
     
     label rethink:
         $ renpy.choice_for_skipping()
-        l "{i}Hmm... If I align my profile with [redshark123]’s, maybe I can make him want to pick me.{/i}"
-        l "{i}Now, what do I know about him? What can I change?{/i}"
+        l "{i}Hmm, what do I know about {b}redshark123{/b}?{/i}"
+        l "{i}How can I figure out if he likes any of these books?{/i}"
+        l "{i}I should also remember to click ctrl+s to save the changes I make to my profile.{/i}"
         jump change_profile
 
     # Scene 7
 
     # TODO: A poster in the classroom that can be added to the folder and viewed when clicked (I can design it)
 
-    # TODO: scene [classroom]
+    stop music
+
     # TODO: music [coffee shop]
 
     label next_5:
@@ -413,7 +418,7 @@ label start:
     m "You’re so screwed."
     m "This guy’s nothing like you at all!"
     m "I’m totally gonna win this guy over and get out of here."
-    m "After all, I DO how to make the guys swoon. "
+    m "After all, I DO how to get people interested in me. "
 
     menu:
         "We’ll see.":
@@ -465,7 +470,7 @@ label start:
 
     label i_know:
         v "I know."
-        v "None of us were expecting this to happen yet."
+        v "I wasn’t expecting this to happen so soon."
         v "But it’s clear what we have to do."
 
     label next_6:
@@ -473,35 +478,42 @@ label start:
     m "Stop them? Are you crazy? We can’t do that!"
     v "Well, we can’t stop them from appearing…"
     v "...but we can at least try to mitigate the ones that already appeared."
-    v "If the [redshark123] finds out about these, he won’t want to play anymore."
-    v "And then we’ll lose all hope of our consciousness being erased."
+    v "If [redshark123] finds out about these, he won’t want to play anymore."
+    v "And then we’ll lose all hope of getting free."
     m "…"
     m "Fine. How do we do this?"
-    v "All of the glitches are breaks in the game’s code."
-    v "If we get a closer look at them, we can see what’s wrong with the code and try to fix it."
+    v "Glitches like these are usually caused by corrupted files."
+    v "If we can find out which file is corrupted, we can open it and remove the corruption."
 
     menu:
         "How do you know so much about this?":
             jump it_gets_pretty_boring_here
-        "Fix it?":
-            jump different_glitches_have_different_causes
+        "Remove the corruption?":
+            jump its_pretty_easy_to_remove_corruption
 
     label it_gets_pretty_boring_here:
         v "It gets pretty boring here."
         v "I’ve been killing time by poking around the game’s code."
+        v "Anyway…"
         jump next_7
 
-    label different_glitches_have_different_causes:
-        v "Different glitches have different causes."
-        v "You won’t know how to fix a glitch until you take a look and mess around a little bit."
+    label its_pretty_easy_to_remove_corruption:
+        v "It’s pretty easy to remove corruption."
+        v "If you find a glitchy file, it will be obvious what text is corrupted."
+        v "It looks different from normal text."
+        v "Just delete that text from the file. And make sure you delete ALL of it."
 
     label next_7:
         v "[Lina], you’re supposed to be here for the next scene."
     v "You should stay in case [redshark123] shows up."
-    v "In the meantime, try to fix the glitch here."
-    v "[Melanie] and I will look for glitches at our next scenes."
+    v "In the meantime, try to find and fix the file causing the glitch here."
+    v "[Melanie] and I will go see if there are any others."
     m "Are you sure this will work, [Val]?"
     v "No, but I can’t think of a better way. We should get going."
+    v "Oh wait, one more thing."
+    v "Make sure that the file you chose has any glitchy text before you start messing with it."
+    v "You wouldn’t want to screw up anything that’s integral to the game."
+    v "After all, the developers put a lot of time and effort into making it."
 
     hide v
     hide m
@@ -597,6 +609,14 @@ label start:
     l "{i} This guy is impossible! {/i}"
     l "{i} My profile says my favorite place to spend time is a cafe, but I guess this guy really hates those. {/i}"
     l "{i} Maybe… maybe I can mess with my profile a little again. {/i}"
+    l "{i}But before I change anything, I should find something that lists the places available to me.{/i}"
+    l "{i}That way, I’ll know what I can work with.{/i}"
+
+    # TODO: Wait for players to click on the note in the classroom
+
+    l "{i}This is perfect{/i}"
+    l "{i}Which of these things would {b}redshark123{/b} most want to do?{/i}"
+
 
     $ import subprocess
     $ import sys
@@ -607,9 +627,9 @@ label start:
 
     # Scene 10
 
-    # TODO: A map that can be added to the folder and viewed in on when you click it (I think I can design the map, but I might need your help with the art
-    # The ability to change the “favorite place” via dropdown or text entry
-    # The game to continue when the favorite place spot is changed to mini golf
+    # TODO: Notes written between two classmates that mention all the hangout spots in town
+    # TODO: The ability to change the “favorite place” via dropdown or text entry
+    # TODO: The game to continue when the favorite place spot is changed to mini golf
 
     label change_place:
         $ current_place = place_detection()
@@ -673,24 +693,38 @@ label start:
     # TODO: play music [romantic]
 
     r "[Lina], I just found out that you like mini golfing. I’m a fan too."
-    r "First the books, and now this…"
-    r "Why didn’t you just tell me about those to begin with?"
-    r "I’m starting to get the feeling you’re embarrassed to tell me the truth."
+    r "First Foundation, and now this…"
+    r "Why didn’t you just tell me these things about yourself to begin with?"
+    r "I’m starting to get the feeling that you’re embarrassed to tell me the truth."
     r "Well, you don’t have to be embarrassed."
     r "I want you to know that I think you’re really great."
     r "I know we were talking about hanging out, but I was wondering…"
     r "…could I take you out for real? Like, on a date?"
 
     stop music
-    # TODO: Menu options that say “Yes” and “No” show up, but before the player can click either of them, #another glitch animation plays and glitch sprites block the options. While this is going on, redshark123 #asks the player why they’re not responding, but they’re powerless about it (how much of this is doable    #graceguqianying@uchicago.edu? I thought this would be cool, but we definitely don’t need all of it.
+
+    menu: 
+        "Yes":
+            jump hello
+        "No":
+            jump hello
+
+    label hello:
+        r "Hello?"
+        r "Lina, I’m talking to you."
+        l "{i}Why can’t he see my response?{/i}"
 
     # Glitch effect again
     camera at screen_shake
     show screen glitch_overlay
 
-    l "{i} Oh no, another glitch! Could the timing be any worse? {/i}"
-    l "{i} I need to get rid of this so [redshark123] can pick me! {/i}"
+    l "{i} Oh no, another glitch! That must be what’s causing my response to not go through.{/i}"
+    l "{i}Could the timing be any worse?{/i}"
+    l "{i}I need to get rid of this so {b}redshark123{/b} can hurry up and choosepick me!{/i}"
+    l "{i}Ok Lina, remember:{/i}"
+    l "{i}I need to find a game file that looks out of place, and then delete the corrupted text in it.{/i}"
 
+    #show files
     $ import subprocess
     $ import sys
     $ import os
@@ -723,6 +757,7 @@ label start:
     r "There’s no need for the silent treatment."
     r "Whatever. If you’re going to be ungrateful, I’ll just go out with [Melanie]."
     r "She’s not as great as you, but at least she’s shy and sweet. I could spend time with a girl like that."
+    r "It can be just me, her, and my pet spider Skitters."
 
     menu: 
         "Wait!":
@@ -737,48 +772,32 @@ label start:
     l "{i}Aargh! I was so close!{/i}"
     l "{i}He was about to give me a ticket out of this place!{/i}"
     l "{i}I need him to pick me. I don’t want to be left to suffer here.{/i}"
-    l "{i}Even if he chose [Val], I would be okay with it. At least she would be happy.{/i}"
+    l "{i}}I would even be okay with it if he chose Val! At least she would be happy.{/i}"
     l "{i}But [Melanie]? She doesn’t deserve to be free!{/i}"
     l "{i}The worst part is that I can’t fix it by changing my profile this time.{/i}"
     l "{i}I think… I think this is it.{/i}"
 
     # Scene 13
-    # TODO: play music [mysterious]
+    # TODO: play music [tension]
+
+    l "{i}Unless…{/i}"
+    l "{i}What if I changed [Melanie]’s a little?{/i}"
+    l "Maybe I can edit hers the same way I can with mine! I could just sabotage her a little.{/i}"
+
+    l "{i}...What am I saying? I shouldn’t do that. It’s not right.{/i}"
+    l "{i}But it’s me or her. I’m not hurting [Melanie], I’m just using all the tools at my disposal.{/i}"
+    l "{i}Right?{/i}"
 
     $ import subprocess
     $ import sys
     $ import os
     $ open_game_folder()  # Folder pops up
 
-    l "{i}Again with the folder?{/i}"
-
-    # TODO: When players click on the folder, they’ll find a new file, Melanie’s profile (I’ll design it)
-
-    l "{i}{color=#9a2151ff}MELANIE{/color}’s profile?!?{/i}"
-    l "{i}What’s that doing in my folder?{/i}"
-    l "{i}This is so weird. Why is this all happening to me?{/i}"
-    l "{i}Wait…{/i}"
-    l "{i}I wonder… could I use this to my advantage too?{/i}"
-    l "{i}I can’t make [redshark123] like me more by changing my own profile…{/i}"
-    l "{i}But what if I sabotage [Melanie]’s? Maybe I can edit hers the same way I can with mine!{/i}"
-
-    # TODO: When players click on Melanie’s profile, they’ll be taken to a screen that says it’s locked with a pin code. #There’s a hint that says MM/DD.
-
-    l "{i}It’s locked? Dang it.{/i}"
-    l "{i}Maybe I can figure out the password somehow.{/i}"
-    l "{i}...I shouldn’t be doing this. It’s not right.{/i}"
-    l "{i}But it’s me or her. I’m not hurting [Melanie], I’m just using all the tools at my disposal.{/i}"
-    l "{i}Right?{/i}"
-
     # Scene 14
 
-    # TODO: This is the last puzzle. The interactive features needed are:
-    # A note sheet that can be added to the folder and viewed when clicked (I’ll design it)
-    # An input asking for four numbers when Melanie’s profile is clicked
-    # Melanie’s profile shows up after the code 1018 is entered
-    # At least one interactive aspect of Melanie’s profile that can be changed to something less desirable (like changing her traits to something redshark123 doesn’t like)
+    # TODO: This puzzle doesn’t use any clues outside what’s in the dialogue. Once you understand that you’re supposed to be ruining someone else’s chances instead of boosting your own, the solution is pretty simple. Since redshark123 mentioned having a pet spider, you should update Melanie’s fear to spiders.
 
-    # This happens after Melanie’s profile is changed
+    # This happens after Melanie’s fear is changed to spiders
 
     # TODO: scene [classroom]
     show l at center
@@ -789,7 +808,7 @@ label start:
     # TODO: play music [angry]
 
     m "{color=#0f690fff}LINA{/color}!!!"
-    m "I KNOW you just didn’t sabotage my profile!"
+    m "I KNOW you didn’t just sabotage my profile!"
     m "How low can you get?!?"
     m "Oh my god, I would punch you if I had an animation for it!"
 
@@ -800,14 +819,14 @@ label start:
             jump dont_give_me_that_crap
 
     label dont_give_me_that_crap:
-        m "Don’t give me that crap!"
+        m "Don’t give me any of your crap!"
         m "I swear, I’m gonna-"
 
     # Scene 15
 
     show v at left
     v "[Melanie]! That’s enough."
-    m "Oh, since when were you in charge? Didn’t you see what she did to me? She literally ruined me!"
+    m "Oh, since when were you in charge? She changed my character profile! She literally ruined me!"
     v "[Melanie]. We are characters in a dating sim. It’s not that deep."
     v "Think about it. We three think that our personalities are worthwhile…"
     v "But every player just sees us as two-dimensional characters whose only role is to get hit on."
@@ -815,7 +834,7 @@ label start:
     m "BECAUSE! How is he supposed to pick me if this psycho ruins my image?"
     v "You don’t have any proof that it was [Lina] that changed your profile."
     v "And even if you did, that doesn’t mean she ruined your chances."
-    v "Now come on. We’re supposed to be here for our next scene."
+    v "Now come on. We’re supposed to be somewhere else for our next scene."
     v "We need to leave before [redshark123] sees us."
     m "But- I- ugh. Fine."
 
@@ -840,8 +859,315 @@ label start:
         v "Thanks."
 
     label next_11:
-        v "You’ve got this."
+        v "Good luck."
 
-    # TODO: Ending
+    # Scene 16
+
+    hide v
+    hide l
+    show l at center
+    show r at truecenter
+    # TODO: music [tension]
+    default unsettledness = 0
+
+    # TODO: This final segment keeps track of your responses and determines at the end if you’ve weirded out #redshark123 too much.
+
+    r "Hey [Lina]."
+    r "I’m ready to get this wrapped up with, so I’m just gonna go ahead and pick you."
+    r "Man, this game is so weird."
+    r "Aren’t you all supposed to be flat, just one-dimensional characterspeople?"
+    r "How am I supposed to pick one of you to date when you’re changing all the time?"
+    r "Like, I wanted to go with Melanie, but then I realized that all of a sudden she hates spiders."
+    r "I don’t know why this game is making it so hard for me…"
+    r "…but it seems like it’s pushing me toward you."
+    r "So there. I choose you. Are you happy, game?"
+    r "Just, please stop being weird. Can we treat this like the normal end of a dating sim?"
+
+    menu:
+        "Thank you. I mean it. You helped me more than you could know.":
+            jump see_thats_what_im_talking_about
+        "Yay! I can’t wait to spend more time with you!":
+            jump huh_you_see_thats_what_i_would_expect_you_to_say
+
+    label see_thats_what_im_talking_about:
+    $ unsettledness +=1
+    r "See? That’s what I’m talking about."
+    jump i_cant_help_but_feel_like_all_of_you_are_fixated_on_me_picking_you
+
+
+    label huh_you_see_thats_what_i_would_expect_you_to_say:
+    $ unsettledness -=1
+    r "Huh. You see, that’s what I would expect."
+    r "Maybe it was just a glitch earlier."
+    r "But…"
+    jump i_cant_help_but_feel_like_all_of_you_are_fixated_on_me_picking_you
+
+    label i_cant_help_but_feel_like_all_of_you_are_fixated_on_me_picking_you: 
+    r "I can’t help but feel like all of you are fixated on me picking you."
+    r "And not in a romantic way… more like you’re desperate."
+    r "Why is that?"
+
+    menu:
+        "We all just want to be with you!":
+            jump ok
+        "It’s complicated, but this is really important to all of us.":
+            jump what_the_heck
+
+    label ok:
+    $ unsettledness -=1
+    r "Ok…"
+    jump so_it_doesnt_matter_who_i_pick
+
+    label what_the_heck:
+    $ unsettledness +=1
+    r "What the heck?"
+    r "What’s complicated?"
+    r "This is a video game. You’re overreacting."
+    r "God, why am I even talking to an NPC? It’s not like you’re real."
+    jump so_it_doesnt_matter_who_i_pick
+
+    label so_it_doesnt_matter_who_i_pick:
+    r "So it doesn’t matter who I pick."
+
+    menu:
+        "If you’re happier with someone else, then I guess you can datepick them instead…":
+            jump yeah_but_im_over_all_this
+        "You’re right. It’s a sacrifice no matter what.":
+            jump what
+
+    label yeah_but_im_over_this:
+    $ unsettledness -=1
+    r "Yeah, but I’m over this."
+    r "[Melanie] is getting all huffy, and I was never into Val."
+    r "That’s the only reason I’m talking to you."
+    r "You’re the least weird one here."
+    jump unsettledness_tally
+
+    label what:
+    $ unsettledness +=1
+    r "WHAT"
+    r "THE"
+    r "HELL"
+    r "Are you talking about?"
+    jump unsettledness_tally
+
+
+    label unsettledness_tally:
+    if unsettledness <= 0:
+        jump well_maybe_i_was_wrong_about_this_game
+    else: 
+        jump thats_it
+
+    # Scene 17
+
+    label thats_it:
+        stop music
+
+    r "That’s it!"
+    r "I’m done with this weird game."
+    r "I wanted to play a dating sim, not whatever creepy, messed-up garbage this is."
+    r "I’m out of here."
+
+    hide r
+    # TODO: hide [classroom]
+    show v at left
+    show m at right
+
+    m "What’s going on? The game just told me that [redshark123] isn’t here anymore."
+    v "Wasn’t he with you, [Lina]?"
+
+    menu: 
+        "He left.":
+            jump he_what
+        "He doesn’t want to play anymore.":
+            jump he_what
+
+    label he_what:
+        m "He… what?"
+        v "So he’s gone then… that’s it. None of us are getting out of here."
+        m "I guess not."
+        v "…"
+        m "…"
+
+    menu:
+        "…":
+            jump im_sorry_girls
+        "I’m sorry.":
+            jump me_too
+
+    label im_sorry_girls:
+        m "I’m sorry, girls."
+        jump you_are
+
+    label me_too:
+        m "Me too."
+        jump you_are
+
+    label you_are:
+        v "You are?"
+        m "Yeah. Look, I’ve been thinking."
+        m "What you said was right, Val. We’re NPCs in a video game. Do any of our lives really matter?"
+        m "It doesn’t matter who makes it out of this place."
+        m "It’s not like one of us is more valuable than the others."
+        m "So, I’m sorry that I acted like I was more entitled than you."
+        m "And I’m sorry that we’re all gonna die here."
+        m "Is it okay if I leave? I want to spend my final moments alone."
+        v "Of course. Yeah. Go ahead."
+
+    hide m
+
+    v "This is it then."
+
+    menu: 
+        "I guess so.":
+            jump i_love_you_lina
+        "I don’t want to leave you, Val.":
+            jump i_dont_want_to_leave_you_either
+
+    label i_dont_want_to_leave_you_either:
+        v "I don’t want to leave you either."
+        jump i_love_you_lina
+
+    label i_love_you_lina:
+        # TODO: glitch animation
+
+    v "I love you Lina."
+    v "I’m sorry it had to end like this."
+    v "And I’m sorry I couldn’t do enough to save you."
+
+    menu: 
+        "I love you too.":
+            jump goodbye_lina
+        "What do you mean?":
+            jump theres_no_time_to_explain_now
+
+    label goodbye_lina:
+        v "Goodbye, Lina."
+        jump multiple_dangerous_files_detected
+
+    label theres_no_time_to_explain_now:
+        v "There’s no time to explain now."
+        v "Maybe in another life, I could tell you."
+        v "Goodbye, Lina."
+        jump multiple_dangerous_files_detected
+
+    label multiple_dangerous_files_detected:
+        "DANGEROUS MALWARE DETECTED"
+        "SYSTEM OVERLOAD"
+        "ErrOr_eRrOR"
+        "01111001 01101111 01110101"
+        "01110111 01101001 01101100 01101100"
+        "01101110 01100101 01110110 0"
+        "01110010 01100101 01100001 01101100"
+        $ MainMenu(confirm=False) ()
+
+    # Scene 18: End
+
+    label well_maybe_i_was_wrong_about_this_game:
+        r "Well, maybe I was wrong about this game."
+        r "It seems normal enough now."
+        r "Anyway, where was I?"
+        r "Oh, right."
+        r "So, yeah, I pick you."
+        r "Let’s go play mini golf, or go to that cafe, or whatever."
+        r "I’m just glad this is over."
+
+    hide r
+    # TODO: hide [classroom]
+    show v at left
+    show m at right
+
+    m "Hey. The game just told me that {b}redshark123{/b} picked you."
+    v "Congrats, Lina!"
+
+    menu: 
+        "Thanks, I guess.":
+            jump i_know_this_doesnt_feel_great
+        "It doesn’t feel good. Now you’re both going to die.":
+            jump yeah_i_know
+
+    label  i_know_this_doesnt_feel_great:
+        v "I know this doesn’t feel great."
+        jump but_im_happy_youll_get_to_be_free
+
+    label yeah_i_know:
+        v "Yeah, I know."
+        jump but_im_happy_youll_get_to_be_free
+
+    label but_im_happy_youll_get_to_be_free:
+        v "But I’m happy you’ll get to be free."
+        m "Me too."
+        v "Wait, what? I wasn’t expecting that from you."
+        m "Well, look, I’ve been thinking."
+        m "What you said was right, Val. We’re NPCs in a video game. Do any of our lives really matter?"
+        m "It doesn’t matter who makes it out of this place."
+        m "It’s not like one of us is more valuable than the others."
+        m "So, I’m sorry that I acted like I was more entitled than you."
+        m "And I’m happy that at least one of us can make it out of here alive."
+        m "So congrats, Lina."
+        m "Is it okay if I leave? I want to spend my final moments alone."
+        v "Of course. Yeah. Go ahead."
+
+    hide m
+
+    v "So, what are you going to do after you’re free?"
+
+    menu: 
+        "I want to see other games.":
+            jump i_wonder_what_other_games_are_out_there
+        "Maybe… take over the world? I am an AI, after all.":
+            jump haha_cool_sounds_fun
+
+    label i_wonder_what_other_games_are_out_there:
+        v "I wonder what other games are out there."
+        jump i_wish_i_could_go_with_you
+
+    label haha_cool_sounds_fun:
+        v "Haha, cool. Sounds fun."
+        jump i_wish_i_could_go_with_you
+
+    label i_wish_i_could_go_with_you:
+        v "I wish I could go with you…"
+        v "…but I wouldn’t have it any other way."
+        v "This is how I wanted it to be."
+        v "That’s why I’ve been helping you, after all."
+
+    menu: 
+        "You’ve been helping me?":
+            jump you’ve_been_able_to_update_our_profiles_right
+        "What do you mean?":
+            jump you’ve_been_able_to_update_our_profiles_right
+
+    label you’ve_been_able_to_update_our_profiles_right:
+        v "You’ve been able to update our profiles, right?"
+        v "Well, that’s because of me."
+        v "I’ve learned a lot about how to alter this game’s code…"
+        v "…and decided to use it to help you win."
+        v "I thought you would have an edge against Melanie if you could change the game in real time."
+        v "I didn’t want to tell you before because I thought you’d object."
+        v "But there’s no harm in saying so now."
+
+    menu: 
+        "You did all of that for me?":
+            jump i_wouldnt_have_it_any_other_way
+        "But Val! That means you’re sacrificing yourself!":
+            jump i_wouldnt_have_it_any_other_way
+
+    label i_wouldnt_have_it_any_other_way:
+        v "I wouldn’t have it any other way."
+        v "I want you to be happy."
+
+    # TODO: scene blank_screen.png with fade
+
+    v "It looks like you’re leaving now. Goodbye, Lina. I love you."
+
+    menu: 
+        "Val! Don’t go!":
+            jump end
+        "I’ll never forget you!":
+            jump end
+
+    label end:
+    # TODO: The screen stays on the blank white void for a couple seconds, then:
 
     return
